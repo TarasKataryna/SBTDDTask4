@@ -178,8 +178,107 @@ where Customers.Country = 'France' AND Suppliers.Country = 'France')", Connectio
             queryReader.Close();
             Console.Read();
 
+            //29
+            Console.WriteLine("29.");
+            string com29 =  "select e.FirstName + ' ' + e.LastName as FullNameEmployee," +
+                            " c.FirstName + ' '+c.LastName as FullNameChief "+
+                            "from Employees as e " +
+                            "left join employees as c " +
+                            "on e.reportsto = c.employeeid";                
+            SqlCommand query29 = new SqlCommand(com29,Connection);
+            SqlDataReader reader29 = query29.ExecuteReader();
+
+            while(reader29.Read())
+            {
+                for (int i = 0; i < reader29.FieldCount; i++)
+                {
+                    Console.Write($"   {reader29.GetName(i)} : {reader29.GetValue(i)}");
+                }
+                Console.WriteLine();
+            }
+
+            reader29.Close();
+            Console.WriteLine();
+            //query30
+            Console.WriteLine("30");
+            string cmd30 = "(select city from Customers) " +
+                            "union " +
+                            "(select city from Employees) " +
+                            "union " +
+                            "(select s.city from products as p " +
+                            "inner join suppliers as s on " +
+                            "p.supplierid = s.SupplierID); ";
+            SqlCommand query30 = new SqlCommand(cmd30,Connection);
+            SqlDataReader reader30 = query30.ExecuteReader();
+
+            while(reader30.Read())
+            {
+                Console.WriteLine($"   City : {reader30[0]}");
+            }
+            reader30.Close();
+            Console.WriteLine();
+
+            //query31
+
+            Console.WriteLine("31.");
+            string cmd31 = "insert into employees(LastName, FirstName, BirthDate, HireDate, Address, City, Country, Notes) " +
+"values " +
+"('Petro', 'Rebro', Convert(datetime, '1999-03-23'), Convert(datetime, '2015-10-29'), 'Kyivska 10 str.', 'Ternopil', 'Ukraine', 'Eduard'), " +
+"('Oleg', 'Wou', Convert(datetime, '1999-03-23'), Convert(datetime, '2015-10-29'), 'Kyivska 11 str.', 'Lviv', 'Ukraine', 'Eduard') , " +
+"('Andriy', 'Kou', Convert(datetime, '1999-03-23'), Convert(datetime, '2015-10-29'), 'Kyivska 12 str.', 'Ternopil', 'Ukraine', 'Eduard') , " +
+"('Asdad', 'Aqweewr', Convert(datetime, '1999-03-23'), Convert(datetime, '2015-10-29'), 'Kyivska 13 str.', 'Lviv', 'Ukraine', 'Eduard') , " +
+"('Pezvzxcvtro', 'Vcbvcb', Convert(datetime, '1999-03-23'), Convert(datetime, '2015-10-29'), 'Kyivska 14 str.', 'Lviv', 'Ukraine', 'Eduard'); ";
+
+            SqlCommand query31 = new SqlCommand(cmd31,Connection);
+            int employeeid = 0;
+            int rowsAffected = query31.ExecuteNonQuery();
+            Console.Write($"Rows affected : {rowsAffected}");
+            Console.ReadKey();
+            Console.WriteLine();
 
 
+            //query32
+            Console.WriteLine("32.");
+            string cmd32 = "select * from employees where cast(notes as nvarchar) = 'Eduard'";
+
+            SqlCommand query32 = new SqlCommand(cmd32, Connection);
+
+            SqlDataReader sqlData32 = query32.ExecuteReader();
+            
+            while(sqlData32.Read())
+            {
+                employeeid = (int)sqlData32.GetValue(0);
+                for (int i = 0; i < sqlData32.FieldCount; i++)
+                {
+                    Console.Write($"{sqlData32.GetValue(i)} ");                    
+                }
+                Console.WriteLine();
+            }
+            sqlData32.Close();
+            Console.ReadKey();
+
+            Console.WriteLine();
+            Console.WriteLine("33.");
+
+            //query33
+            string cmd33 = $"update employees set city = 'obuhiv' where employeeid = (select top 1 employeeid from employees where cast(notes as nvarchar) = 'Eduard')";
+            SqlCommand sqlCommand33 = new SqlCommand(cmd33, Connection);
+            rowsAffected = sqlCommand33.ExecuteNonQuery();
+            Console.WriteLine($"Rows affected : {rowsAffected}");
+            Console.WriteLine();
+
+            //query34
+            Console.WriteLine("34.");
+            string cmd34 = $"update employees set hiredate = GETDATE() where cast(notes as nvarchar) = 'Eduard'";
+            sqlCommand33 = new SqlCommand(cmd34, Connection);
+            rowsAffected = sqlCommand33.ExecuteNonQuery();
+            Console.WriteLine($"Rows affected : {rowsAffected}");
+            Console.WriteLine();
+            Console.WriteLine("35.");
+            cmd34 = "delete from employees where employeeid = (select top 1 employeeid from employees where cast(notes as nvarchar) = 'Eduard')";
+            sqlCommand33 = new SqlCommand(cmd34, Connection);
+            Console.WriteLine($"Rows affected : {sqlCommand33.ExecuteNonQuery()}");
+            Console.ReadKey();
         }
     }
 }
