@@ -122,6 +122,30 @@ namespace ADOForPlatform
             Console.WriteLine();
             queryReader.Close();
 
+            //9
+            SqlCommand query9 = new SqlCommand("SELECT TOP 1 FirstName, LastName FROM Employees ORDER BY BirthDate;", Connection);
+            queryReader = query9.ExecuteReader();
+            Console.WriteLine("9. Show the first and last name(s) of the eldest employee(s). \n");
+            Console.WriteLine();
+            while (queryReader.Read())
+            {
+                Console.Write("  " + queryReader[0] + "  " + queryReader[1] + "\n");
+            }
+            Console.WriteLine();
+            queryReader.Close();
+
+            //10
+            SqlCommand query10 = new SqlCommand("SELECT TOP 3 FirstName, LastName, DATEDIFF(year, BirthDate, GETDATE()) AS Age FROM Employees ORDER BY BirthDate;", Connection);
+            queryReader = query10.ExecuteReader();
+            Console.WriteLine("10. Show first, last names and ages of 3 eldest employees. \n");
+            Console.WriteLine();
+            while (queryReader.Read())
+            {
+                Console.Write("  " + queryReader[0] + "  " + queryReader[1] + queryReader[2] + "\n");
+            }
+            Console.WriteLine();
+            queryReader.Close();
+
             //19 query
             SqlCommand query19 = new SqlCommand(@"select Customers.ContactName,Count(Orders.CustomerID) as OrdersCount from Customers inner join Orders on Customers.CustomerID = Orders.CustomerID where Customers.Country = 'France' Group By(Customers.ContactName)  HAVING(COUNT(Orders.CustomerID) > 1) ;", Connection);
             queryReader = query19.ExecuteReader();
