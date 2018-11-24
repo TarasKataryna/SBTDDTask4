@@ -146,6 +146,30 @@ namespace ADOForPlatform
             Console.WriteLine();
             queryReader.Close();
 
+            //11
+            SqlCommand query11 = new SqlCommand("SELECT DISTINCT City FROM Employees;", Connection);
+            queryReader = query11.ExecuteReader();
+            Console.WriteLine("11. Show the list of all cities where the employees are from. \n");
+            Console.WriteLine();
+            while (queryReader.Read())
+            {
+                Console.Write("  " + queryReader[0] + "\n");
+            }
+            Console.WriteLine();
+            queryReader.Close();
+
+            //12
+            SqlCommand query12 = new SqlCommand("SELECT FirstName, LastName, BirthDate FROM Employees WHERE MONTH(BirthDate) = 12;", Connection);
+            queryReader = query12.ExecuteReader();
+            Console.WriteLine("12. Show first, last names and dates of birth of the employees who celebrate their birthdays this month \n");
+            Console.WriteLine();
+            while (queryReader.Read())
+            {
+                Console.Write("  " + queryReader[0], queryReader[1], queryReader[2] + "\n");
+            }
+            Console.WriteLine();
+            queryReader.Close();
+
             //19 query
             SqlCommand query19 = new SqlCommand(@"select Customers.ContactName,Count(Orders.CustomerID) as OrdersCount from Customers inner join Orders on Customers.CustomerID = Orders.CustomerID where Customers.Country = 'France' Group By(Customers.ContactName)  HAVING(COUNT(Orders.CustomerID) > 1) ;", Connection);
             queryReader = query19.ExecuteReader();
