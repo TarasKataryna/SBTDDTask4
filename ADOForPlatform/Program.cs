@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.SqlClient;
+using System.Configuration;
 
 namespace ADOForPlatform
 {
@@ -11,7 +8,7 @@ namespace ADOForPlatform
     {
         static void Main(string[] args)
         {
-            SqlConnection Connection = new SqlConnection(@"Data Source=.\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True"); //Data Source=.\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True
+            SqlConnection Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Connection"].ConnectionString);
             try
             {
                 Connection.Open();
