@@ -110,6 +110,18 @@ namespace ADOForPlatform
             Console.WriteLine();
             queryReader.Close();
 
+            //8
+            SqlCommand query8 = new SqlCommand("SELECT City, AVG(DATEDIFF(year, BirthDate, GETDATE())) AS AvgBirth FROM Employees GROUP BY City HAVING AVG(DATEDIFF(year, BirthDate, GETDATE())) > 60;", Connection);
+            queryReader = query8.ExecuteReader();
+            Console.WriteLine("8. Show the list of cities in which the average age of employees is greater than 60(the average age is also to be shown)\n");
+            Console.WriteLine();
+            while (queryReader.Read())
+            {
+                Console.Write("  " + queryReader[0] + "  " + queryReader[1] +  "\n");
+            }
+            Console.WriteLine();
+            queryReader.Close();
+
             //19 query
             SqlCommand query19 = new SqlCommand(@"select Customers.ContactName,Count(Orders.CustomerID) as OrdersCount from Customers inner join Orders on Customers.CustomerID = Orders.CustomerID where Customers.Country = 'France' Group By(Customers.ContactName)  HAVING(COUNT(Orders.CustomerID) > 1) ;", Connection);
             queryReader = query19.ExecuteReader();
