@@ -358,6 +358,9 @@ where Customers.Country = 'France' AND Suppliers.Country = 'France')", Connectio
             rowsAffected = sqlCommand33.ExecuteNonQuery();
             Console.WriteLine($"Rows affected : {rowsAffected}");
             Console.WriteLine();
+
+            //query35
+
             Console.WriteLine("35.");
             cmd34 = "delete from employees where employeeid = (select top 1 employeeid from employees where cast(notes as nvarchar) = 'Eduard')";
             sqlCommand33 = new SqlCommand(cmd34, Connection);
