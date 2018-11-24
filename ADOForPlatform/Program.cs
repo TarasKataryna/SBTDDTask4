@@ -11,7 +11,7 @@ namespace ADOForPlatform
     {
         static void Main(string[] args)
         {
-            SqlConnection Connection = new SqlConnection(@"Data Source=DESKTOP-IT7ALRA;Initial Catalog=Northwind;Integrated Security=True"); //Data Source=.\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True
+            SqlConnection Connection = new SqlConnection(@"Data Source=.\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True"); //Data Source=.\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True
             try
             {
                 Connection.Open();
@@ -30,7 +30,8 @@ namespace ADOForPlatform
             {
                 for(int i = 0; i < queryReader.FieldCount; ++i)
                 {
-                    Console.Write("  " + queryReader[i] + "\n");
+                        Console.Write("{0,-25}  {1}",queryReader.GetName(i),queryReader.GetValue(i));
+                    Console.WriteLine();
                 }
 
             }
