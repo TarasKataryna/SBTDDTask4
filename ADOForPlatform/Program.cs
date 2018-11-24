@@ -141,7 +141,7 @@ namespace ADOForPlatform
             Console.WriteLine();
             while (queryReader.Read())
             {
-                Console.Write("  " + queryReader[0] + "  " + queryReader[1] + queryReader[2] + "\n");
+                Console.Write("  " + queryReader[0] + "  " + queryReader[1] + "  " + queryReader[2] + "\n");
             }
             Console.WriteLine();
             queryReader.Close();
@@ -165,7 +165,31 @@ namespace ADOForPlatform
             Console.WriteLine();
             while (queryReader.Read())
             {
-                Console.Write("  " + queryReader[0], queryReader[1], queryReader[2] + "\n");
+                Console.Write("  " + queryReader[0] + "  " + queryReader[1] + "  " + queryReader[2] + "\n");
+            }
+            Console.WriteLine();
+            queryReader.Close();
+
+            //13
+            SqlCommand query13 = new SqlCommand("SELECT DISTINCT FirstName, LastName FROM Employees JOIN Orders ON Employees.EmployeeID = Orders.EmployeeID WHERE ShipCity = 'Madrid';", Connection);
+            queryReader = query13.ExecuteReader();
+            Console.WriteLine("13. Show first and last names of the employees who used to serve orders shipped to Madrid. \n");
+            Console.WriteLine();
+            while (queryReader.Read())
+            {
+                Console.Write("  " + queryReader[0] + "  " + queryReader[1] + "\n");
+            }
+            Console.WriteLine();
+            queryReader.Close();
+
+            //14
+            SqlCommand query14 = new SqlCommand("SELECT E.FirstName, E.LastName, COUNT(O.EmployeeID) AS OrdersAmount FROM Employees AS E LEFT JOIN Orders AS O ON O.EmployeeID = E.EmployeeID WHERE O.OrderDate BETWEEN '1997-01-01' AND '1997-12-31' GROUP BY E.FirstName, E.LastName;", Connection);
+            queryReader = query14.ExecuteReader();
+            Console.WriteLine("14. Show first and last names of the employees as well as the count of orders each of them have received during the year 1997 (use left join). \n");
+            Console.WriteLine();
+            while (queryReader.Read())
+            {
+                Console.Write("  " + queryReader[0] + "  " + queryReader[1] + "  " + queryReader[2] + "\n");
             }
             Console.WriteLine();
             queryReader.Close();
