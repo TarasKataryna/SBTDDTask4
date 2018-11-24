@@ -11,7 +11,7 @@ namespace ADOForPlatform
     {
         static void Main(string[] args)
         {
-            SqlConnection Connection = new SqlConnection(@"Data Source=.\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True");
+            SqlConnection Connection = new SqlConnection(@"Data Source=DESKTOP-IT7ALRA;Initial Catalog=Northwind;Integrated Security=True"); //Data Source=.\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True
             try
             {
                 Connection.Open();
@@ -21,9 +21,97 @@ namespace ADOForPlatform
                 Console.WriteLine(e.Message);
             }
 
+            //1
+            SqlCommand query1 = new SqlCommand("select * from Employees where EmployeeID = 8;", Connection);
+            SqlDataReader queryReader = query1.ExecuteReader();
+            Console.WriteLine("1.Show all info about the employee with ID 8.");
+            Console.WriteLine();
+            while (queryReader.Read())
+            {
+                for(int i = 0; i < queryReader.FieldCount; ++i)
+                {
+                    Console.Write("  " + queryReader[i] + "\n");
+                }
+
+            }
+            Console.WriteLine();
+            queryReader.Close();
+
+            //2
+            SqlCommand query2 = new SqlCommand("select FirstName, LastName from Employees where City = 'London';", Connection);
+            queryReader = query2.ExecuteReader();
+            Console.WriteLine("2.Show the list of first and last names of the employees from London.");
+            Console.WriteLine();
+            while (queryReader.Read())
+            {
+                Console.Write("  " + queryReader[0] + "  " + queryReader[1] + "\n");
+            }
+            Console.WriteLine();
+            queryReader.Close();
+
+            //3
+            SqlCommand query3 = new SqlCommand("select FirstName, LastName from Employees where FirstName like 'A%';", Connection);
+            queryReader = query3.ExecuteReader();
+            Console.WriteLine("3.Show the list of first and last names of the employees whose first name begins with letter A.");
+            Console.WriteLine();
+            while (queryReader.Read())
+            {
+                Console.Write("  " + queryReader[0] + "  " + queryReader[1] + "\n");
+            }
+            Console.WriteLine();
+            queryReader.Close();
+
+            //4
+            SqlCommand query4 = new SqlCommand("select FirstName, LastName, DATEDIFF(year, BirthDate, GETDATE()) as Age from Employees wher WHERE DATEDIFF(year, BirthDate, GETDATE()) > 55 order by LastName;", Connection);
+            queryReader = query4.ExecuteReader();
+            Console.WriteLine("4.Show the list of first, last names and ages of the employees whose age is greater than 55. The result should be sorted by last name.");
+            Console.WriteLine();
+            while (queryReader.Read())
+            {
+                Console.Write("  " + queryReader[0] + "  " + queryReader[1] + "  " + queryReader[2] + "\n");
+            }
+            Console.WriteLine();
+            queryReader.Close();
+
+            //5
+            SqlCommand query5 = new SqlCommand("select COUNT(*) as AmmountOfEmployees from Employees where City = 'London';", Connection);
+            queryReader = query5.ExecuteReader();
+            Console.WriteLine("5.Calculate the count of employees from London.");
+            Console.WriteLine();
+            while (queryReader.Read())
+            {
+                Console.Write("  " + queryReader[0] + "\n");
+            }
+            Console.WriteLine();
+            queryReader.Close();
+
+            //6
+            SqlCommand query6 = new SqlCommand("select MAX(DATEDIFF(year, BirthDate, GETDATE())) as MaxAge, MIN(DATEDIFF(year, BirthDate, GETDATE())) as MinAge, AVG(DATEDIFF(year, BirthDate, GETDATE())) as AvgAge from Employees where City = 'London';", Connection);
+            queryReader = query6.ExecuteReader();
+            Console.WriteLine("6.Calculate the greatest, the smallest and the average age among the employees from London.");
+            Console.WriteLine();
+            while (queryReader.Read())
+            {
+                Console.Write("  " + queryReader[0] + "  " + queryReader[1] + "  " + queryReader[2] + "\n");
+            }
+            Console.WriteLine();
+            queryReader.Close();
+
+            //7
+            SqlCommand query7 = new SqlCommand("select City, MAX(DATEDIFF(year, BirthDate, GETDATE())) as MaxAge, MIN(DATEDIFF(year, BirthDate, GETDATE())) as MinAge, AVG(DATEDIFF(year, BirthDate, GETDATE())) as AvgAge from Employees GROUP BY City;", Connection);
+            queryReader = query7.ExecuteReader();
+            Console.WriteLine("7.Calculate the greatest, the smallest and the average age of the employees for each city.");
+            Console.WriteLine();
+            while (queryReader.Read())
+            {
+                Console.Write("  " + queryReader[0] + "  " + queryReader[1] + "  " + queryReader[2] + "  " + queryReader[3] + "\n");
+            }
+            Console.WriteLine();
+            queryReader.Close();
+
             //19 query
             SqlCommand query19 = new SqlCommand(@"select Customers.ContactName,Count(Orders.CustomerID) as OrdersCount from Customers inner join Orders on Customers.CustomerID = Orders.CustomerID where Customers.Country = 'France' Group By(Customers.ContactName)  HAVING(COUNT(Orders.CustomerID) > 1) ;", Connection);
-            SqlDataReader queryReader = query19.ExecuteReader();
+            queryReader = query19.ExecuteReader();
             Console.WriteLine("19.Show the list of french customers’ names who have made more than one order");
             Console.WriteLine();
             while (queryReader.Read())
