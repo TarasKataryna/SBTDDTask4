@@ -14,6 +14,7 @@
         public ADORepository()
         {
             connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Connection"].ConnectionString);
+            connection.Open();
         }
         public ADORepository(SqlConnection con)
         {
@@ -35,6 +36,7 @@
                 }
                 result.Add(s);
             }
+            reader.Close();
             return result;
         }
 
