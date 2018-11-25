@@ -18,8 +18,8 @@
             {
                 Console.WriteLine(e.Message);
             }*/
-
-            ADORepository repository = new ADORepository();
+            SqlConnection Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Connection"].ConnectionString);
+            ADORepository repository = new ADORepository(Connection);
             //1
             /* SqlCommand query1 = new SqlCommand("select * from Employees where EmployeeID = 8;", Connection);
              SqlDataReader queryReader = query1.ExecuteReader();
@@ -307,7 +307,7 @@ HAVING COUNT (O.CustomerID) > 1;";
  where Customers.Country = 'France' AND Suppliers.Country = 'France')";
 
             Console.WriteLine("23.*Show the list of french customers’ names who used to order non-french products.");
-            res = repository.getFromDatabse(query20, 1);
+            res = repository.getFromDatabse(query23, 1);
             for (int i = 0; i < res.Count; ++i)
             {
                 for (int j = 0; j < res[i].Length; ++j)
@@ -322,7 +322,7 @@ HAVING COUNT (O.CustomerID) > 1;";
             //24 query
             string query24 = @"select distinct Customers.ContactName from Customers inner join Orders on Customers.CustomerID=Orders.CustomerID inner join [Order Details] on [Order Details].OrderID=Orders.OrderID inner join Products on [Order Details].ProductID = Products.ProductID inner join Suppliers on Products.SupplierID = Suppliers.SupplierID where Customers.Country = 'France' AND Suppliers.Country = 'France'";
             Console.WriteLine("24.*Show the list of french customers’ names who used to order french products");
-            res = repository.getFromDatabse(query20, 1);
+            res = repository.getFromDatabse(query24, 1);
             for (int i = 0; i < res.Count; ++i)
             {
                 for (int j = 0; j < res[i].Length; ++j)

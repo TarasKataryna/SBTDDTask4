@@ -13,24 +13,24 @@
 
         public ADORepository()
         {
-            connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Connection"].ConnectionString);
-            connection.Open();
+
         }
         public ADORepository(SqlConnection con)
         {
             connection = con;
+            connection.Open();
         }
 
-        public  List<string[]> getFromDatabse(string str, int inRow)
+        virtual public List<string[]> getFromDatabse(string str, int inRow)
         {
             List<string[]> result = new List<string[]>();
-            SqlCommand command = new SqlCommand (str, connection);
+            SqlCommand command = new SqlCommand(str, connection);
             SqlDataReader reader = command.ExecuteReader();
 
-            while(reader.Read())
+            while (reader.Read())
             {
                 string[] s = new string[inRow];
-                for(int i=0;i<inRow;++i)
+                for (int i = 0; i < inRow; ++i)
                 {
                     s[i] = reader[i].ToString();
                 }
@@ -39,7 +39,13 @@
             reader.Close();
             return result;
         }
-
-         
+        public bool connectionOpen(SqlConnection con)
+        {
+            if (con.State == System.Data.ConnectionState.Open)
+            {
+                return true;
+            }
+            else return false;
+        }
     }
 }
