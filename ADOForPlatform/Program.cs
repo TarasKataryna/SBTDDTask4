@@ -215,7 +215,39 @@ namespace ADOForPlatform
             Console.WriteLine();
             queryReader.Close();
 
+            //21 query
+            SqlCommand query21 = new SqlCommand(@"SELECT C.ContactName, SUM(OD.Quantity) AS Count, SUM(OD.UnitPrice * OD.Quantity) AS PriceSum 
+                                                FROM Customers AS C 
+                                                LEFT JOIN Orders AS O ON C.CustomerID = O.CustomerID 
+                                                LEFT JOIN [Order Details] AS OD ON OD.OrderId = O.OrderId
+                                                LEFT JOIN [Products] AS P ON P.ProductID = OD.ProductID 
+                                                WHERE P.ProductName = 'Tofu'
+                                                GROUP BY C.ContactName;", Connection);
+            queryReader = query21.ExecuteReader();
+            Console.WriteLine("21.	*Show the list of customers’ names who used to order the ‘Tofu’ product, along with the total amount of the product they have ordered and with the total sum for ordered product calculated.");
+            while (queryReader.Read())
+            {
+                Console.WriteLine("  " + queryReader[0]);
+            }
+            Console.WriteLine();
+            queryReader.Close();
 
+            //22 query
+            SqlCommand query22 = new SqlCommand(@"SELECT DISTINCT C.ContactName 
+                                                FROM Customers as C 
+                                                LEFT JOIN Orders AS O ON C.CustomerID = O.CustomerID 
+                                                LEFT JOIN [Order Details] AS OD ON O.OrderID = OD.OrderID 
+                                                LEFT JOIN [Products] AS P ON OD.ProductID = P.ProductID 
+                                                LEFT JOIN [Suppliers] AS S ON P.SupplierID = S.SupplierID 
+                                                WHERE S.Country <> 'France' AND C.Country = 'France'", Connection);
+            queryReader = query22.ExecuteReader();
+            Console.WriteLine("22.	*Show the list of french customers’ names who used to order non-french products (use left join).");
+            while (queryReader.Read())
+            {
+                Console.WriteLine("  " + queryReader[0]);
+            }
+            Console.WriteLine();
+            queryReader.Close();
 
             //23 query
             SqlCommand query23 = new SqlCommand(@"select distinct Customers.ContactName 
@@ -260,7 +292,6 @@ where Customers.Country = 'France' AND Suppliers.Country = 'France')", Connectio
             }
             Console.WriteLine();
             queryReader.Close();
-            Console.Read();
 
             //29
             Console.WriteLine("29.");
@@ -317,7 +348,6 @@ where Customers.Country = 'France' AND Suppliers.Country = 'France')", Connectio
             int employeeid = 0;
             int rowsAffected = query31.ExecuteNonQuery();
             Console.Write($"Rows affected : {rowsAffected}");
-            Console.ReadKey();
             Console.WriteLine();
 
 
