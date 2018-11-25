@@ -1,9 +1,9 @@
-﻿using System;
-using System.Data.SqlClient;
-using System.Configuration;
-
-namespace ADOForPlatform
+﻿namespace ADOForPlatform
 {
+    using System;
+    using System.Data.SqlClient;
+    using System.Configuration;
+
     class Program
     {
         static void Main(string[] args)
