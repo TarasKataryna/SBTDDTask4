@@ -224,6 +224,63 @@
             }
             Console.WriteLine();
 
+            //15
+            string query15 = @"SELECT Employees.FirstName, Employees.LastName, COUNT(Orders.EmployeeID) AS numOfOrders
+FROM Employees
+JOIN Orders ON Orders.EmployeeID = Employees.EmployeeID
+WHERE Orders.OrderDate BETWEEN '1997-01-01' AND '1997-12-31'
+GROUP BY Employees.FirstName, Employees.LastName;";
+            Console.WriteLine("15.	Show first and last names of the employees as well as the count of " +
+                "orders each of them have received during the year 1997\n");
+            res = repository.getFromDatabse(query15, 3);
+            for (int i = 0; i < res.Count; ++i)
+            {
+                for (int j = 0; j < res[i].Length; ++j)
+                {
+                    Console.Write(res[i][j] + "   ");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+
+            //16
+            string query16 = @"SELECT Employees.FirstName, Employees.LastName, COUNT(Orders.EmployeeID) AS numOfOrders 
+FROM Employees 
+LEFT JOIN Orders ON Orders.EmployeeID = Employees.EmployeeID 
+WHERE Orders.OrderDate BETWEEN '1997-01-01' AND '1997-12-31' AND Orders.ShippedDate > Orders.RequiredDate 
+GROUP BY Employees.FirstName, Employees.LastName;";
+            Console.WriteLine("16.	Show first and last names of the employees as well as the count of their " +
+                "orders shipped after required date during the year 1997 (use left join).\n");
+            res = repository.getFromDatabse(query16, 3);
+            for (int i = 0; i < res.Count; ++i)
+            {
+                for (int j = 0; j < res[i].Length; ++j)
+                {
+                    Console.Write(res[i][j] + "   ");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+
+
+            //17
+            string query17 = @"SELECT Customers.CustomerID, COUNT(Orders.CustomerID) AS numOfOrders 
+FROM Customers 
+JOIN Orders ON Orders.CustomerID = Customers.CustomerID 
+WHERE Customers.Country = 'France'
+GROUP BY Customers.CustomerID;";
+            Console.WriteLine("17.	17.	Show the count of orders made by each customer from France.\n");
+            res = repository.getFromDatabse(query17, 2);
+            for (int i = 0; i < res.Count; ++i)
+            {
+                for (int j = 0; j < res[i].Length; ++j)
+                {
+                    Console.Write(res[i][j] + "   ");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+
             //18 query
             string query18 = @"SELECT C.ContactName 
                                                 FROM Customers AS C 
@@ -363,6 +420,25 @@ HAVING COUNT (O.CustomerID) > 1;";
                 Console.WriteLine();
             }
             Console.WriteLine();
+
+            //25
+            string query25 = @"SELECT Customers.Country, SUM(([Order Details].UnitPrice*[Order Details].Quantity)*(1-[Order Details].Discount)) AS sumOfOrders 
+FROM Customers 
+JOIN Orders ON Orders.CustomerID = Customers.CustomerID 
+Join [Order Details] on [Order Details].OrderID = Orders.OrderID
+GROUP BY Customers.Country;";
+            Console.WriteLine("25.	*Show the total ordering sum calculated for each country of customer.\n");
+            res = repository.getFromDatabse(query25, 2);
+            for (int i = 0; i < res.Count; ++i)
+            {
+                for (int j = 0; j < res[i].Length; ++j)
+                {
+                    Console.Write(res[i][j] + "   ");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+
 
             //29
             Console.WriteLine("29.");
