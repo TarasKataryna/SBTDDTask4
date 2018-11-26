@@ -1,19 +1,30 @@
 ﻿namespace UnitTestProject1
 {
-    using System;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Moq;
     using System.Collections.Generic;
     using ADOForPlatform;
-    using System.Data.SqlClient;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
+
+ /// <summary>
+ /// Unit tests
+ /// </summary>
     [TestClass]
     public class UnitTest1
     {
-        int calculate(List<string[]> l)
+        /// <summary>
+        /// Calculate strings
+        /// </summary>
+        /// <param name="l"> list of strings </param>
+        /// <returns> number of strings in list </returns>
+        public int Calculate(List<string[]> l)
         {
             return l.Count;
         }
-        //імітуємо те, ніби ми знаємо правильний результат нашого запиту, і знаємо, що поверне нам наш запит і так з усіма тестами
+        ////імітуємо те, ніби ми знаємо правильний результат нашого запиту, і знаємо, що поверне нам наш запит і так з усіма тестами
+        
+        /// <summary>
+        /// First test
+        /// </summary>
         [TestMethod]
         public void Query18TestCount()
         {
@@ -38,12 +49,16 @@ HAVING COUNT (O.CustomerID) > 1;";
 
             var rep = new ADORepository();
             var repositoryMock = new Mock<ADORepository>();
-            repositoryMock.Setup(r => r.getFromDatabse(query18,1)).Returns(list);
+            repositoryMock.Setup(r => r.GetFromDatabse(query18, 1)).Returns(list);
 
             var forTest = repositoryMock.Object;
 
-            Assert.AreEqual<int>(calculate(repositoryMock.Object.getFromDatabse(query18,1)), 10);
+            Assert.AreEqual<int>(this.Calculate(repositoryMock.Object.GetFromDatabse(query18, 1)), 10);
         }
+
+        /// <summary>
+        /// Test 2
+        /// </summary>
         [TestMethod]
         public void Query18TestData()
         {
@@ -68,13 +83,11 @@ HAVING COUNT (O.CustomerID) > 1;";
 
             var rep = new ADORepository();
             var repositoryMock = new Mock<ADORepository>();
-            repositoryMock.Setup(r => r.getFromDatabse(query18, 1)).Returns(list);
+            repositoryMock.Setup(r => r.GetFromDatabse(query18, 1)).Returns(list);
 
             var forTest = repositoryMock.Object;
 
-            Assert.AreEqual<string>(repositoryMock.Object.getFromDatabse(query18, 1)[9][0], "Paul Henriot");
-
+            Assert.AreEqual<string>(repositoryMock.Object.GetFromDatabse(query18, 1)[9][0], "Paul Henriot");
         }
-
     }
 }
